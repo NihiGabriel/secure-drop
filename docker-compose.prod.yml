@@ -1,0 +1,9 @@
+services:
+  app:
+    restart: always
+
+  nginx:
+    restart: always
+
+  db:
+    restart: always

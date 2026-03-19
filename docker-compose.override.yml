@@ -1,0 +1,10 @@
+services:
+  app:
+    volumes:
+      - .:/var/www       # Laravel code
+      - storage-data:/var/www/storage
+      - cache-data:/var/www/bootstrap/cache
+
+volumes:
+  storage-data:
+  cache-data:
