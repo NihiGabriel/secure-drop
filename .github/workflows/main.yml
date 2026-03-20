@@ -55,7 +55,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/**secure-drop:latest**
+          tags: ${{ secrets.DOCKER_USERNAME }}/secure-drop:latest
           cache-from: type=gha            # Pulls cache from GitHub Actions
           cache-to: type=gha,mode=max     # Saves cache to GitHub Actions
 
