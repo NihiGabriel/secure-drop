@@ -74,10 +74,11 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: APP_ENV,APP_DEBUG,DB_HOST,DB_DATABASE,DB_USERNAME,DB_PASSWORD
           script: |
             cd /var/www/secure-drop/secure-drop
             docker compose pull
-            docker compose up -d
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
             docker compose exec -u root app chmod -R 777 storage bootstrap/cache
             docker compose exec app php artisan migrate --force
             docker compose exec app php artisan config:cache

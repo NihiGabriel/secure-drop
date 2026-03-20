@@ -1,10 +1,12 @@
 services:
   app:
+    build: .
     volumes:
-      - .:/var/www       # Laravel code
-      - storage-data:/var/www/storage
-      - cache-data:/var/www/bootstrap/cache
+      - .:/var/www
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
 
-volumes:
-  storage-data:
-  cache-data:
+  nginx:
+    volumes:
+      - .:/var/www:ro

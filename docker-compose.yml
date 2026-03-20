@@ -1,7 +1,6 @@
 services:
   traefik:
     image: traefik:v2.11
-    container_name: traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -17,47 +16,27 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: secure-drop-nginx
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - .:/var/www:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.securedrop.rule=Host(`3.90.33.65`)"
-      - "traefik.http.routers.securedrop.entrypoints=web"
-      - "traefik.http.services.securedrop.loadbalancer.server.port=80"
-    depends_on:
-      - app
     networks:
       - app-network
 
   app:
-    # CHANGE THIS TO YOUR DOCKER HUB IMAGE
-    image: gabrielnihi/secure-drop:latest
-    container_name: secure-drop-app
     user: "1000:1000"
-    environment:
-      APP_ENV: production
-      APP_DEBUG: false
-      DB_HOST: db
-      DB_DATABASE: secure_drop
-      DB_USERNAME: root
-      DB_PASSWORD: root
-    volumes:
-      - .:/var/www
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "php", "artisan", "migrate:status"]
+      interval: 10s
+      timeout: 5s
 
   db:
     image: mysql:8
-    container_name: secure-drop-db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: secure_drop
-    volumes:
-      - db-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD}"]
+      interval: 10s
 
 networks:
   app-network:

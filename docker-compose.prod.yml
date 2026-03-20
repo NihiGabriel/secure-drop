@@ -1,9 +1,13 @@
 services:
-  app:
-    restart: always
-
   nginx:
-    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.securedrop.rule=Host(`3.90.33.65`)"
+      - "traefik.http.services.securedrop.loadbalancer.server.port=80"
 
-  db:
+  app:
+    image: gabrielnihi/secure-drop:latest
     restart: always
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
