@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Added permissions to allow the runner to push code fixes
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -33,7 +36,12 @@ jobs:
           php artisan migrate --force
 
       - name: Run lint (Pint)
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint
+
+      - name: Commit lint fixes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: fix php code style (Pint)"
 
       - name: Run tests
         run: php artisan test
