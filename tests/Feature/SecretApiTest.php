@@ -14,18 +14,18 @@ class SecretApiTest extends TestCase
         // 1. Test POST (Create)
         $response = $this->postJson('/api/v1/secrets', [
             'secret' => 'top-secret-message',
-            'ttl' => 60
+            'ttl' => 60,
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonStructure(['uuid']);
+            ->assertJsonStructure(['uuid']);
 
         $uuid = $response->json('uuid');
 
         // 2. Test GET (First time - Success)
         $getResponse = $this->getJson("/api/v1/secrets/{$uuid}");
         $getResponse->assertStatus(200)
-                    ->assertJson(['secret' => 'top-secret-message']);
+            ->assertJson(['secret' => 'top-secret-message']);
 
         // 3. Test GET (Second time - Burned/404)
         $getSecondResponse = $this->getJson("/api/v1/secrets/{$uuid}");
