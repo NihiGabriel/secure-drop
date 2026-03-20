@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://localhost:8000";
+        var tryItOutBaseUrl = "http://localhost";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -88,7 +88,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 19, 2026</li>
+        <li>Last updated: March 20, 2026</li>
     </ul>
 </div>
 
@@ -97,7 +97,7 @@
     <div class="content">
         <h1 id="introduction">Introduction</h1>
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost:8000</code>
+    <strong>Base URL</strong>: <code>http://localhost</code>
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
@@ -124,7 +124,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/api/v1/secrets" \
+    "http://localhost/api/v1/secrets" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -136,7 +136,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/secrets"
+    "http://localhost/api/v1/secrets"
 );
 
 const headers = {
@@ -270,14 +270,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/secrets/123e4567-e89b-12d3-a456-426614174000" \
+    --get "http://localhost/api/v1/secrets/123e4567-e89b-12d3-a456-426614174000" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/secrets/123e4567-e89b-12d3-a456-426614174000"
+    "http://localhost/api/v1/secrets/123e4567-e89b-12d3-a456-426614174000"
 );
 
 const headers = {
