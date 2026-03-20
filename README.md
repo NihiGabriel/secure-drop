@@ -21,6 +21,7 @@ Run Migrations: docker compose exec app php artisan migrate
 The app will be available at http://secure-drop.localhost.
 
 🏗️ Architectural Decisions
+
 1. Backend: Service-Repository Pattern
 Following the Strict Separation of Concerns requirement, the business logic is decoupled from the data access layer:
 SecretRepository: Handles all Eloquent queries and database interactions.
