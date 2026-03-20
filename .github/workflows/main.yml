@@ -59,22 +59,21 @@ jobs:
           cache-from: type=gha            # Pulls cache from GitHub Actions
           cache-to: type=gha,mode=max     # Saves cache to GitHub Actions
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to AWS via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cd /var/www/secure-drop/secure-drop
-            docker compose pull
-            docker compose up -d
-            docker compose exec -u root app chmod -R 777 storage bootstrap/cache
-            docker compose exec app php artisan migrate --force
-            docker compose exec app php artisan config:cache
-            docker compose exec app php artisan route:cache
+deploy:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Deploy to AWS via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/secure-drop/secure-drop
+          docker compose pull
+          docker compose up -d
+          docker compose exec -u root app chmod -R 777 storage bootstrap/cache
+          docker compose exec app php artisan migrate --force
+          docker compose exec app php artisan config:cache
+          docker compose exec app php artisan route:cache
