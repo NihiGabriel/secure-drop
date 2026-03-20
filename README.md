@@ -10,10 +10,10 @@ bash
 
 docker compose up -d
 
-
 Use code with caution.
 
 Post-Installation Steps:
+
 Install dependencies: docker compose exec app composer install
 Generate Key: docker compose exec app php artisan key:generate
 Run Migrations: docker compose exec app php artisan migrate
