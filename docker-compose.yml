@@ -18,6 +18,13 @@ services:
     image: nginx:alpine
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.securedrop.rule=Host(`localhost`) || Host(`secure-drop.localhost`)"
+      - "traefik.http.routers.securedrop.entrypoints=web"
+      - "traefik.http.services.securedrop.loadbalancer.server.port=80"
+    depends_on:
+      - app
     networks:
       - app-network
 
