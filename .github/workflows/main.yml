@@ -14,6 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Required for the fast caching to work
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -51,7 +55,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/secure-drop:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/**secure-drop:latest**
+          cache-from: type=gha            # Pulls cache from GitHub Actions
+          cache-to: type=gha,mode=max     # Saves cache to GitHub Actions
 
   deploy:
     needs: build
