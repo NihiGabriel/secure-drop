@@ -23,7 +23,7 @@ services:
       - .:/var/www:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.securedrop.rule=Host(`secure-drop.localhost`)"
+      - "traefik.http.routers.securedrop.rule=Host(`3.90.33.65`)"
       - "traefik.http.routers.securedrop.entrypoints=web"
       - "traefik.http.services.securedrop.loadbalancer.server.port=80"
     depends_on:
