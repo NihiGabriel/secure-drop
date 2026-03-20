@@ -9,7 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
-      - "8080:8080" # Dashboard
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
@@ -32,13 +32,13 @@ services:
       - app-network
 
   app:
-    build: .
+    # CHANGE THIS TO YOUR DOCKER HUB IMAGE
+    image: gabrielnihi/secure-drop:latest
     container_name: secure-drop-app
     user: "1000:1000"
     environment:
-      WWWUSER: ${WWWUSER:-1000}
-      WWWGROUP: ${WWWGROUP:-1000}
-      APP_KEY: ${APP_KEY}
+      APP_ENV: production
+      APP_DEBUG: false
       DB_HOST: db
       DB_DATABASE: secure_drop
       DB_USERNAME: root
@@ -54,8 +54,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: secure_drop
-    ports:
-      - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
     networks:
