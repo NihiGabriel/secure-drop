@@ -1,0 +1,56 @@
+name: Secure Drop CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, bcmath, pdo_mysql
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Copy .env
+        run: cp .env.example .env || true
+
+      - name: Generate app key
+        run: php artisan key:generate
+
+      - name: Run migrations (SQLite for CI)
+        run: |
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Run lint (Pint)
+        run: ./vendor/bin/pint --test
+
+      - name: Run tests
+        run: php artisan test
+
+      - name: Build Docker image
+        run: docker build -t secure-drop .
+
+      - name: Scan Docker image (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: secure-drop
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Tag image
+        run: docker tag secure-drop ${{ secrets.DOCKER_USERNAME }}/secure-drop:latest
+
+      - name: Push image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/secure-drop:latest
