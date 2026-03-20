@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Interfaces\SecretRepositoryInterface;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class SecretService
 {
@@ -37,13 +37,14 @@ class SecretService
     {
         $record = $this->repository->findByUuid($uuid);
 
-        if (!$record) {
+        if (! $record) {
             return null;
         }
 
         // Check if expired
         if ($record->expires_at && Carbon::now()->gt($record->expires_at)) {
             $this->repository->deleteByUuid($uuid);
+
             return null;
         }
 

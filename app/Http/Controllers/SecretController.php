@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SecretController extends Controller
 {
@@ -27,18 +27,18 @@ class SecretController extends Controller
 
         return response()->json(['uuid' => $uuid], 201);
     }
-/**
- * Retrieve and burn a secret
- *
- * @urlParam uuid string required The UUID of the secret. Example: 123e4567-e89b-12d3-a456-426614174000
- */
+
+    /**
+     * Retrieve and burn a secret
+     *
+     * @urlParam uuid string required The UUID of the secret. Example: 123e4567-e89b-12d3-a456-426614174000
+     */
     public function show($uuid)
-    
     {
         $path = "secrets/{$uuid}.txt";
 
         // 2. Check if the file exists using the Storage facade
-        if (!Storage::disk('local')->exists($path)) {
+        if (! Storage::disk('local')->exists($path)) {
             return response()->json(['message' => 'Secret not found'], 404);
         }
 

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Interfaces\SecretRepositoryInterface;
+use App\Repositories\SecretRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,10 +14,11 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            \App\Interfaces\SecretRepositoryInterface::class,
-            \App\Repositories\SecretRepository::class
+            SecretRepositoryInterface::class,
+            SecretRepository::class
         );
     }
+
     /**
      * Bootstrap any application services.
      */

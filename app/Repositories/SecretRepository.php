@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\Secret;
 use App\Interfaces\SecretRepositoryInterface;
+use App\Models\Secret;
 
 class SecretRepository implements SecretRepositoryInterface
 {

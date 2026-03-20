@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\SecretService;
+use Illuminate\Http\Request;
 
 class SecretController extends Controller
 {
@@ -26,7 +26,7 @@ class SecretController extends Controller
 
         return response()->json([
             'uuid' => $uuid,
-            'url' => url("/api/v1/secrets/{$uuid}")
+            'url' => url("/api/v1/secrets/{$uuid}"),
         ], 201);
     }
 
@@ -34,7 +34,7 @@ class SecretController extends Controller
     {
         $secret = $this->service->retrieveSecret($uuid);
 
-        if (!$secret) {
+        if (! $secret) {
             return response()->json(['message' => 'Secret not found or expired'], 404);
         }
 
